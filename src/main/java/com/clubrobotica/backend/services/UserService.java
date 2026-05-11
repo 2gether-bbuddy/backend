@@ -1,20 +1,41 @@
 package com.clubrobotica.backend.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.clubrobotica.backend.models.User;
 import com.clubrobotica.backend.repositories.UserRepository;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
-    @Autowired
-    public UserRepository repo;
+    private final UserRepository userRepository;
     
-    public User save (User u){
-        return repo.save(u);
+    public UserService(UserRepository userRepository){
+        this.userRepository = userRepository;
     }
     
-    public User findByControlNumber(String control_number){
-        return repo.findByControlNumber(control_number);
+    //Obtener todos
+    public List<User> getUsers(){
+        return userRepository.findAll();
+    }
+    
+    //Guardar
+    public User saveUser(User user){
+        return userRepository.save(user);
+    }
+    
+    //Buscar por numero de control
+    public Optional<User> getControlNumber(String control_number){
+        return userRepository.findByControlNumber(control_number);
+    }
+    
+    //Por correo
+    public Optional<User> getEmail(String email){
+        return userRepository.findByEmail(email);
+    }
+    
+    //Eliminar
+    public void deleteUser(String control_number){
+        userRepository.deleteByControlNumber(control_number);
     }
 }

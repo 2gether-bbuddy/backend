@@ -3,21 +3,27 @@ package com.clubrobotica.backend.models;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "usuarios")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @JoinColumn(name = "numero_control")
+    private String controlNumber;
     
     private String name;
-    private String career;
-    private String semester;
-    private String control_number;
     private String email;
     private String password;
     private String phone;
     
+    @ManyToOne
+    @JoinColumn(name = "id_carrera")
+    private Career career;
+    
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    public String getUsername() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
     public enum Role {
         PRESIDENTE,
@@ -29,10 +35,6 @@ public class User {
     public User(){      
     }
     
-    public Long getId(){
-        return id;
-    }
-    
     public String getName(){
         return name;
     }
@@ -41,28 +43,20 @@ public class User {
         this.name = name;
     }
     
-    public String getCareer(){
+    public Career getCareer(){
         return career;
     }
     
-    public void setCareer(String career){
+    public void setCareer(Career career){
         this.career = career;
     }
     
-    public String getSemester(){
-        return semester;
-    }
-    
-    public void setSemester(String semester){
-        this.semester = semester;
-    }
-    
     public String getControlNumber(){
-        return control_number;
+        return controlNumber;
     }
     
     public void setControlNumber(String control_number){
-        this.control_number = control_number;
+        this.controlNumber = control_number;
     }
     
     public String getEmail(){
