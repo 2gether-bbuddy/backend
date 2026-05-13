@@ -1,39 +1,46 @@
 package com.clubrobotica.backend.models;
 
+import jakarta.persistence.Embeddable; // <-- Faltaba este import
 import java.io.Serializable;
 import java.util.Objects;
 
-public class ParticipantId implements Serializable{
+@Embeddable // <-- Esta etiqueta es OBLIGATORIA
+public class ParticipantId implements Serializable {
+
     private Integer idConversation;
-    private String contolNumber;
-    
-    public ParticipantId(){
+    private String controlNumber; // <-- Ya corregido con la 'r'
+
+    public ParticipantId() {
     }
-    
-    public Integer getIdConversation(){
+
+    public Integer getIdConversation() {
         return idConversation;
     }
-    public void setIdConversation(Integer idConversation){
+
+    public void setIdConversation(Integer idConversation) {
         this.idConversation = idConversation;
     }
-    public String getControlNumber(){
-        return contolNumber;
+
+    public String getControlNumber() {
+        return controlNumber; // <-- Actualizado
     }
-    public void setControlNumber(String controlNumber){
-        this.contolNumber = controlNumber;
+
+    public void setControlNumber(String controlNumber) {
+        this.controlNumber = controlNumber; // <-- Actualizado
     }
-    
+
     @Override
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ParticipantId)) return false;
         ParticipantId that = (ParticipantId) o;
-        return Objects.equals(idConversation, that.idConversation) && Objects.equals(contolNumber, that.contolNumber);
+        // Se actualizó también aquí abajo
+        return Objects.equals(idConversation, that.idConversation) &&
+                Objects.equals(controlNumber, that.controlNumber);
     }
-    
+
     @Override
-    public int hashCode(){
-        return Objects.hash(idConversation, contolNumber);
+    public int hashCode() {
+        return Objects.hash(idConversation, controlNumber); // <-- Actualizado
     }
-    
 }
