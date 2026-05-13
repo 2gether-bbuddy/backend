@@ -8,22 +8,22 @@ public class Application {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idApplication;
-    
+
     private String reason;
     private String skills;
     private String projects;
     private String state;
-    
+
     @ManyToOne
     @JoinColumn(name = "num_control")
     private User user;
-    
+
     public Application(){
     }
     public Integer getIdApplication(){
         return idApplication;
     }
-    public void setApplication(Integer idApplication){
+    public void setIdApplication(Integer idApplication){
         this.idApplication = idApplication;
     }
     public String getReason(){

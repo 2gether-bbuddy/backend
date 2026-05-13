@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 @Table(name = "usuarios")
 public class User {
     @Id
-    @JoinColumn(name = "numero_control")
+    @Column(name = "control_number")
     private String controlNumber;
     
     private String name;
@@ -20,10 +20,6 @@ public class User {
     
     @Enumerated(EnumType.STRING)
     private Role role;
-
-    public String getUsername() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
     
     public enum Role {
         PRESIDENTE,
