@@ -20,6 +20,7 @@ public class ApplicationService {
     }
 
     public List<Application> getPendingApplications() {
+        // Traemos solo los que siguen pendientes
         return applicationRepository.findByState("PENDIENTE");
     }
 
@@ -30,10 +31,10 @@ public class ApplicationService {
         // 1. Cambiamos el estado de la solicitud
         app.setState("ACEPTADO");
 
-        // 2. Le damos el "ascenso" al usuario
+        // 2. Le damos el "ascenso" al usuario (¡Blindaje anti-degradación activado!)
         User user = app.getUser();
-        if (user != null) {
-            // Nota: Asegúrate de que "MIEMBRO" exista en tu Enum de roles en User.java
+        // Verificamos que el usuario exista y que no tenga ya un cargo superior
+        if (user != null && user.getRole() != User.Role.PRESIDENTE && user.getRole() != User.Role.MESA) {
             user.setRole(User.Role.MIEMBRO);
             userRepository.save(user);
         }

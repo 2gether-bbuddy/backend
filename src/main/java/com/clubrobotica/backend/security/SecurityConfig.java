@@ -33,6 +33,13 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**", "/error").permitAll()
                         // PERMITIMOS VER PUBLICACIONES SIN TOKEN
                         .requestMatchers(HttpMethod.GET, "/publications", "/publications/**").permitAll()
+
+                        // ¡PERMITIMOS VER LAS CARRERAS Y SEMESTRES AL REGISTRARSE!
+                        .requestMatchers(HttpMethod.GET, "/careers", "/semester").permitAll()
+
+                        // ¡EL PASE VIP PARA LOS WEBSOCKETS!
+                        .requestMatchers("/chat/**").permitAll()
+
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
@@ -43,9 +50,17 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
+
+        // 1. Usamos Patterns en lugar de Origins fijos para evitar el error del comodín
+        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
+
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
+
+        // 2. Especificamos los headers que SockJS y JWT necesitan
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With", "Accept", "Origin"));
+
+        // 3. ¡LA MAGIA PARA EXPO WEB! Permitimos credenciales
+        configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

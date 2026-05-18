@@ -52,7 +52,7 @@ public class Message {
     public Conversation getConversation(){
         return conversation;
     }
-    public void setState(Conversation conversation){
+    public void setConversation(Conversation conversation){
         this.conversation = conversation;
     }
 }

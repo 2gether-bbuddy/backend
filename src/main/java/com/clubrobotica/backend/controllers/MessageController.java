@@ -1,28 +1,36 @@
 package com.clubrobotica.backend.controllers;
 
+import com.clubrobotica.backend.models.Conversation;
 import com.clubrobotica.backend.models.Message;
 import com.clubrobotica.backend.services.MessageService;
-import java.util.List;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.stereotype.Controller;
 
-@RestController
-@RequestMapping("/message")
-@CrossOrigin("*")
+@Controller
 public class MessageController {
+
     private final MessageService messageService;
-    public MessageController(
-        MessageService messageService){
+
+    public MessageController(MessageService messageService) {
         this.messageService = messageService;
     }
-    
-    @GetMapping
-    public List<Message> getAll(){
-        return messageService.getAll();
-    }
-    
-    @PostMapping
-    public Message save(
-        @RequestBody Message message){
-        return messageService.save(message);
+
+    // El celular envía el mensaje a: /app/chat/{idDelCanal}
+    @MessageMapping("/chat/{conversationId}")
+
+    // El servidor lo retransmite a: /topic/conversation/{idDelCanal}
+    @SendTo("/topic/conversation/{conversationId}")
+    public Message sendMessage(@DestinationVariable Integer conversationId, Message message) {
+
+        // 1. Vinculamos el mensaje al canal correcto
+        Conversation conv = new Conversation();
+        conv.setIdConversation(conversationId);
+        message.setConversation(conv);
+
+        // 2. Lo guardamos en la base de datos
+        // 3. El return hace que Spring dispare el mensaje por el WebSocket automáticamente
+        return messageService.saveMessage(message);
     }
 }

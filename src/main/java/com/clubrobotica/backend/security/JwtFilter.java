@@ -18,12 +18,21 @@ import java.io.IOException;
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
-    // Asegúrate de que los nombres de estas clases coincidan con los que tienes en tu proyecto
     @Autowired
     private JwtUtil jwtUtil;
 
     @Autowired
     private UserDetailsService userDetailsService;
+
+    // =================================================================
+    // ¡ESTE ES EL ESCUDO ANTI-BLOQUEOS PARA LOS WEBSOCKETS!
+    // =================================================================
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getRequestURI();
+        // Si la petición va para abrir el túnel del chat, el filtro se hace a un lado
+        return path.startsWith("/chat");
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -67,7 +76,7 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         }
 
-        // 5. Dejamos que la petición continúe su camino hacia el PublicationController
+        // 5. Dejamos que la petición continúe su camino
         filterChain.doFilter(request, response);
     }
 }

@@ -8,15 +8,14 @@ import org.springframework.web.socket.config.annotation.*;
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
-    public void configureMessageBroker(
-        MessageBrokerRegistry config){
+    public void configureMessageBroker(MessageBrokerRegistry config){
         config.enableSimpleBroker("/topic");
         config.setApplicationDestinationPrefixes("/app");
     }
-    
+
     @Override
-    public void registerStompEndpoints(
-        StompEndpointRegistry registry){
+    public void registerStompEndpoints(StompEndpointRegistry registry){
+        // Mantenemos los OriginPatterns abiertos y SockJS activado
         registry.addEndpoint("/chat").setAllowedOriginPatterns("*").withSockJS();
     }
 }

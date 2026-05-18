@@ -8,21 +8,17 @@ import java.time.LocalDateTime;
 public class InscriptionPublication {
 
     @EmbeddedId
-    private InscriptionId id = new InscriptionId(); // Es buena práctica inicializarlo
-
-    // === AQUÍ SUCEDE LA MAGIA DE LAS RELACIONES ===
+    private InscriptionId id = new InscriptionId();
 
     @ManyToOne
-    @MapsId("controlNum") // Debe coincidir con el nombre de la variable dentro de InscriptionId
+    @MapsId("controlNum")
     @JoinColumn(name = "control_num")
-    private User usuario; // Cambia "Usuario" por el nombre exacto de tu modelo
+    private User usuario;
 
     @ManyToOne
-    @MapsId("idPublication") // Debe coincidir con el nombre de la variable dentro de InscriptionId
+    @MapsId("idPublication")
     @JoinColumn(name = "id_publication")
-    private Publication publicacion; // Cambia "Publicacion" por el nombre exacto de tu modelo
-
-    // ==============================================
+    private Publication publicacion;
 
     private LocalDateTime dateInscription;
     private boolean physical_assistance;
@@ -30,9 +26,14 @@ public class InscriptionPublication {
     public InscriptionPublication() {
     }
 
-    // ... (Tus getters y setters actuales para id, dateInscription y physical_assistance) ...
+    public InscriptionId getId() {
+        return id;
+    }
 
-    // ¡No olvides agregar los getters y setters para los nuevos objetos!
+    public void setId(InscriptionId id) {
+        this.id = id;
+    }
+
     public User getUsuario() {
         return usuario;
     }
@@ -47,5 +48,21 @@ public class InscriptionPublication {
 
     public void setPublicacion(Publication publicacion) {
         this.publicacion = publicacion;
+    }
+
+    public LocalDateTime getDateInscription() {
+        return dateInscription;
+    }
+
+    public void setDateInscription(LocalDateTime dateInscription) {
+        this.dateInscription = dateInscription;
+    }
+
+    public boolean isPhysical_assistance() {
+        return physical_assistance;
+    }
+
+    public void setPhysical_assistance(boolean physical_assistance) {
+        this.physical_assistance = physical_assistance;
     }
 }
