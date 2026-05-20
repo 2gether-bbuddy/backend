@@ -38,4 +38,13 @@ public class UserService {
     public void deleteUser(String control_number){
         userRepository.deleteByControlNumber(control_number);
     }
+
+    // NUEVO MÉTODO: Baja Lógica
+    public User darDeBaja(String controlNumber) {
+        User user = userRepository.findByControlNumber(controlNumber)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        user.setRole(User.Role.BAJA);
+        return userRepository.save(user);
+    }
 }

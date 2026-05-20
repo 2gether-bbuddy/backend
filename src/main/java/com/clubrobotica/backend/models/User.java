@@ -25,7 +25,8 @@ public class User {
         PRESIDENTE,
         MESA,
         MIEMBRO,
-        ALUMNO
+        ALUMNO,
+        BAJA
     }
     
     public User(){      
